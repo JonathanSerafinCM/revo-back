@@ -15,6 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const app = express();
 app.use(express.json());
 app.use(express.static(path.resolve('public')));
+app.use(express.static(path.resolve('css')));
 app.use(cors());
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
