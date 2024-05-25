@@ -15,16 +15,6 @@
             "src": "/(.*)",
             "dest": "/server.js"
         }
-    ],
-    "headers": [
-        {
-            "source": "/public/css/(.*)",
-            "headers": [
-                {
-                    "key": "Content-Type",
-                    "value": "text/css"
-                }
-            ]
-        }
     ]
+   
 }
