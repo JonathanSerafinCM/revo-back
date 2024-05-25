@@ -17,16 +17,8 @@ app.use(express.json());
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('css')));
 app.use(cors());
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/img/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
-    }
-})
+var upload = multer({ storage: multer.memoryStorage() })
 
-var upload = multer({ storage: storage })
 
 app.post('/upload', upload.single('image'), async function (req, res, next) {
     const { id } = req.body;
@@ -57,17 +49,47 @@ app.post('/deleteImage', async function (req, res, next) {
 });
 
 app.post('/uploadImageToDB', upload.single('image'), async function (req, res, next) {
-    const { id_imagen, ruta, descripcion, tipo, id_usuario } = req.body;
-    const newImagePath = path.join('public/img/', req.file.originalname);
-    console.log("Ruta de la imagen subida:", newImagePath);
-    const sql = "INSERT INTO imagen (id_imagen, ruta, descripcion, tipo, id_usuario) VALUES (?, ?, ?, ?, ?)";
-    try {
-        await db.query(sql, [id_imagen, newImagePath, descripcion, tipo, id_usuario]);
-        res.send('Archivo subido y ruta de imagen actualizada con éxito');
-        console.log("Ruta de la imagen actualizada con éxito");
-    } catch (err) {
-        console.log("Error al actualizar la ruta de la imagen:", err);
-        return res.status(500).json({ error: err.message });
+    const file = req.file;
+
+    // Subir la imagen al bucket en Supabase
+    const { data: uploadedFile, error: uploadError } = await supabase
+        .storage
+        .from('img')
+        .upload(file.originalname, file.buffer);
+
+        if (uploadError) {
+            console.log("Error al subir la imagen:", uploadError);
+            return res.status(500).json({ error: uploadError.message });
+        } else if (!file.buffer || file.buffer.length === 0) {
+            console.log("El búfer del archivo está vacío");
+            return res.status(500).json({ error: "El búfer del archivo está vacío" });
+        } else {
+            console.log("Imagen subida con éxito", uploadedFile);
+            if (uploadedFile.size === 0) {
+                console.log("La imagen se subió con un tamaño de 0 bytes");
+                return res.status(500).json({ error: "La imagen se subió con un tamaño de 0 bytes" });
+            }
+        }
+
+    // Obtener la URL pública de la imagen
+    const { data: urlData, error: urlError } = await supabase
+        .storage
+        .from('img')
+        .getPublicUrl(file.originalname);
+    console.log("URL de la imagen:", urlData);
+
+    const newImagePath = urlData.publicUrl;
+    console.log("Ruta a subir:", newImagePath);
+    // Insertar la ruta de la imagen en la base de datos
+    const { data: insertedData, error: insertError } = await supabase
+        .from('imagen')
+        .insert([
+            { ruta: newImagePath, descripcion: 'Carrusel', tipo: 'Carrusel', id_usuario: 1 }
+        ]);
+
+    if (insertError) {
+        console.log("Error al insertar la ruta de la imagen en la base de datos:", insertError);
+        return res.status(500).json({ error: insertError.message });
     }
 });
 // Inicia el servidor

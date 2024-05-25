@@ -109,18 +109,13 @@ document.getElementById('imageInput').addEventListener('change', function() {
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
     formData.append('image', file);
-    formData.append('id_imagen', null); // replace with actual id
-    formData.append('ruta', 'public/img/' + file.name);
-    formData.append('descripcion', 'default'); // replace with actual description
-    formData.append('tipo', 'Carrusel'); // replace with actual type
-    formData.append('id_usuario', 1);
     xhr.open('POST', '/uploadImageToDB', true);
     xhr.onload = function() {
-        if (xhr.status === 200) {
+        if (xhr.status === 500) {
+            alert('La subida de la imagen falló!');
+        } else {
             alert('Imagen subida y guardada con éxito!');
             cargarCarrusel();
-        } else {
-            alert('La subida de la imagen falló!');
         }
     };
     xhr.send(formData);
