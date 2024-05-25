@@ -18,10 +18,13 @@
     ],
     "headers": [
         {
-            "src": "/public/css/(.*)",
-            "headers": {
-                "Content-Type": "text/css"
-            }
+            "source": "/public/css/(.*)",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "text/css"
+                }
+            ]
         }
     ]
 }
