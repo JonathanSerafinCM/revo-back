@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/309dfd974b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Administracion</title>
+</head>
+<body class="cp-admon">
+        <div class="cs-admon">
+            <div>
+                <input type="file" id="fileInput" style="display: none;" />
+                <div class="cs-admon__header">
+                    <img src="/img/icons8-stylish-sombrero-hat-with-vintage-looks-isolated-on-a-white-background-100.png" alt="sombnrero-rev">
+                    <h1>Bienvenido Victor</h1>
+                    <p>Seleccione las fotos para el carrusel principal</p>
+                    <button id="logout">Cerrar sesión</button>
+                    <button id="uploadButton">Subir imagen</button>
+                    <input type="file" id="imageInput" style="display: none;" />
+                </div>
+                <div class="cs-admon__grid">
+                    <!--Item-1-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-1-->
+                    <!--Item-2-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-2-->
+                    <!--Item-3-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-3-->
+                    <!--Item-4-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-4-->
+                    <!--Item-5-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-5-->
+                    <!--Item-6-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-6-->
+                    <!--Item-7-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-7-->
+                    <!--Item-8-->
+                    <div class="admon-item">
+                        <img src="/img/Prueba(1).jpg" class="background-image">
+                        <img src="/img/icons8-basura-100.png" class="overlay-image">
+                    </div>                    
+                    <!--Fin-Item-8-->
+                    <!--Item-9-->
+                    <div class="admon-item" id="mas">
+                        <img src="/img/icons8-más-100.png">
+                    </div>
+                    <!--Fin-Item-9-->
+                </div>
+            </div>
+            <div class="cs-admon__temporada">
+                <h1>Seleccione Temporada</h1>
+                <form action="/css/admon.js" method="post">
+                    <div class="admon-label">
+                        <label>Primavera</label>
+                        <input type="radio" name="temporada" value="Primavera">
+                    </div>
+                    <div class="admon-label">
+                        <label>Meses Patrios</label>
+                        <input type="radio" name="temporada" value="Patrio">
+                    </div>
+                    <div class="admon-label">
+                        <label>Navidad</label>
+                        <input type="radio" name="temporada" value="Navidad">
+                    </div>
+                    <div class="admon-label">
+                        <label>San valentin</label>
+                        <input type="radio" name="temporada" value="Valentin">
+                    </div>
+                    <div class="admon-label">
+                        <label>Dia de muertos</label>
+                        <input type="radio" name="temporada" value="Muertos">
+                    </div>
+                    <div class="admon-label">
+                        <label>Año nuevo</label>
+                        <input type="radio" name="temporada" value="Nuevo">
+                    </div>
+                    <div class="admon-label">
+                        <label>Día de las madres</label>
+                        <input type="radio" name="temporada" value="Madres">
+                    </div>
+                    <div class="admon-label">
+                        <label>Defecto</label>
+                        <input type="radio" name="temporada" value="Defecto">
+                    </div>
+                    <input type="submit" value="Enviar">
+                </form>
+            </div>
+        </div>
+</body>
+<script src="/css/admon.js"></script>
+
+</html>
