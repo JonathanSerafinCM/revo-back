@@ -165,7 +165,7 @@ app.get('/imagenCarrusel', async (req, res) => {
 
         if (data && data.length > 0) {
             // Devuelve el arreglo de rutas de las imágenes
-            return res.json(data.map(item => item.ruta));
+            return res.json(data.map(item => ({ url: item.ruta })));
         } else {
             return res.status(404).json({ error: "Imagen no encontrada" });
         }
