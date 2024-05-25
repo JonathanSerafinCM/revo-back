@@ -15,5 +15,13 @@
             "src": "/(.*)",
             "dest": "/server.js"
         }
+    ],
+    "headers": [
+        {
+            "src": "/public/css/(.*)",
+            "headers": {
+                "Content-Type": "text/css"
+            }
+        }
     ]
 }
