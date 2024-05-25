@@ -226,7 +226,7 @@ function checkAuth(req, res, next) {
   }
 }
 
-app.get('/admin', checkAuth, (req, res) => {
+app.get('/admin', (req, res) => {
     res.sendFile(path.resolve('public', 'admon.html'));
 });
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -240,25 +240,21 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    // Consulta a la base de datos para obtener la contraseña del usuario
-    const sql = "SELECT contraseña_hash FROM usuario WHERE nombre = ?";
     try {
-        const result = await db.query(sql, [username]);
-        if (result.length > 0) {
-            // Si el nombre de usuario y la contraseña son correctos, redirige al usuario a la página de administración
-            if (password === result[0].contraseña_hash) {
-                req.session.user = username;
-                res.redirect('/admin');
-            } else {
-                // Si la contraseña es incorrecta, envía un error
-                res.status(401).json({ error: 'Contraseña incorrecta' });
-            }
-        } else {
-            // Si el nombre de usuario no existe, envía un error
-            res.status(404).json({ error: 'Usuario no encontrado' });
+        const { user, error } = await supabase.auth.signInWithPassword({
+            email: username,
+            password: password
+        });
+
+        if (error) throw error;
+
+        if (user) {
+            req.session.user = username;
+            res.redirect('/admin');
+            console.log("Usuario autenticado con éxito");
         }
     } catch (err) {
-        console.log("Error en la consulta a la base de datos:", err);
+        console.log("Error during sign in:", err);
         return res.status(500).json({ error: err.message });
     }
 });
