@@ -1,6 +1,6 @@
 async function cargarCarrusel() {
     try {
-        const response = await fetch('http://localhost:3002/imagenCarrusel');
+        const response = await fetch('https://revolucionarios-backend.vercel.app/imagenCarrusel');
         if (!response.ok) {
             throw new Error('Error al obtener las imágenes del carrusel');
         }
@@ -41,7 +41,7 @@ div.appendChild(button);
 }
 async function deleteImage(id) {
     console.log(id);
-    const response = await fetch('http://localhost:3002/deleteImage', {
+    const response = await fetch('https://revolucionarios-backend.vercel.app/deleteImage', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
