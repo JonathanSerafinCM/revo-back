@@ -21,6 +21,7 @@ var upload = multer({ storage: multer.memoryStorage() })
 
 
 app.post('/upload', upload.single('image'), async function (req, res, next) {
+    // Elimina la imagen existente
     const file = req.file;
 
     // Subir la imagen al bucket en Supabase
@@ -52,9 +53,6 @@ app.post('/upload', upload.single('image'), async function (req, res, next) {
 
     const newImagePath = urlData.publicUrl;
     console.log("Ruta a subir:", newImagePath);
-
-    // Aquí puedes agregar el código para cambiar la ruta de la imagen
-
 // Editar la ruta de la imagen en la base de datos
 const { data: updatedData, error: updateError } = await supabase
     .from('imagen')
@@ -336,18 +334,25 @@ app.post('/login', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
-app.post('/updateImage', express.json(), async (req, res) => {
+app.post('/updateImage', async function (req, res, next) {
     const { temporada } = req.body;
-    const newImagePath = path.join('public/img/', `${temporada}.png`);
-    const sql = "UPDATE imagen SET ruta = ? WHERE id_imagen = 6";
 
-    try {
-        await db.query(sql, [newImagePath]);
-        res.json({ message: 'Imagen actualizada con éxito' });
-    } catch (err) {
-        console.log("Error al actualizar la ruta de la imagen:", err);
-        return res.status(500).json({ error: err.message });
+    // Generar la nueva ruta de la imagen
+    const newImagePath = `https://qxtumkmhykeajygikdhy.supabase.co/storage/v1/object/public/img/${temporada}.png`;
+
+    // Actualizar la ruta de la imagen en la base de datos
+    const { data: updatedData, error: updateError } = await supabase
+        .from('imagen')
+        .update({ ruta: newImagePath })
+        .eq('tipo', 'fondo');
+
+    if (updateError) {
+        console.log("Error al actualizar la imagen:", updateError);
+        return res.status(500).json({ error: updateError.message });
     }
+
+    console.log("Imagen actualizada con éxito");
+    res.json({ message: 'Imagen actualizada con éxito' });
 });
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
