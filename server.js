@@ -21,18 +21,48 @@ var upload = multer({ storage: multer.memoryStorage() })
 
 
 app.post('/upload', upload.single('image'), async function (req, res, next) {
-    const { id } = req.body;
-    const newImagePath = path.join('public/img/', req.file.originalname);
-    console.log("Ruta de la imagen subida:", newImagePath);
-    const sql = "UPDATE imagen SET ruta = ? WHERE id_imagen = ?";
-    try {
-        await db.query(sql, [newImagePath, id]);
-        res.send('Archivo subido y ruta de imagen actualizada con éxito');
-        console.log("Ruta de la imagen actualizada con éxito");
-    } catch (err) {
-        console.log("Error al actualizar la ruta de la imagen:", err);
-        return res.status(500).json({ error: err.message });
+    const file = req.file;
+
+    // Subir la imagen al bucket en Supabase
+    const { data: uploadedFile, error: uploadError } = await supabase
+        .storage
+        .from('img')
+        .upload(file.originalname, file.buffer);
+
+    if (uploadError) {
+        console.log("Error al subir la imagen:", uploadError);
+        return res.status(500).json({ error: uploadError.message });
+    } else if (!file.buffer || file.buffer.length === 0) {
+        console.log("El búfer del archivo está vacío");
+        return res.status(500).json({ error: "El búfer del archivo está vacío" });
+    } else {
+        console.log("Imagen subida con éxito", uploadedFile);
+        if (uploadedFile.size === 0) {
+            console.log("La imagen se subió con un tamaño de 0 bytes");
+            return res.status(500).json({ error: "La imagen se subió con un tamaño de 0 bytes" });
+        }
     }
+
+    // Obtener la URL pública de la imagen
+    const { data: urlData, error: urlError } = await supabase
+        .storage
+        .from('img')
+        .getPublicUrl(file.originalname);
+    console.log("URL de la imagen:", urlData);
+
+    const newImagePath = urlData.publicUrl;
+    console.log("Ruta a subir:", newImagePath);
+
+    // Aquí puedes agregar el código para cambiar la ruta de la imagen
+
+// Editar la ruta de la imagen en la base de datos
+const { data: updatedData, error: updateError } = await supabase
+    .from('imagen')
+    .update({ ruta: newImagePath })
+    .eq('id_imagen', req.body.id);
+
+console.log("Imagen subida con éxito");
+    
 });
 app.post('/deleteImage', async function (req, res, next) {
     const { id } = req.body;
