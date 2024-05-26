@@ -36,10 +36,36 @@ app.post('/upload', upload.single('image'), async function (req, res, next) {
 });
 app.post('/deleteImage', async function (req, res, next) {
     const { id } = req.body;
-    const sql = "DELETE FROM imagen WHERE id_imagen = ?";
+    console.log("ID de la imagen a eliminar:", id);
     try {
-        await db.query(sql, [id]);
-        // Send a JSON response instead of a string
+        // Obtén la ruta de la imagen de la base de datos
+        const { data: imageData, error: imageError } = await supabase
+            .from('imagen')
+            .select('ruta')
+            .eq('id_imagen', id)
+            .single();
+
+        if (imageError) throw imageError;
+
+        // Extrae el nombre del archivo de la ruta
+        const filename = path.basename(imageData.ruta);
+
+        // Elimina la imagen del almacenamiento de Supabase
+        const { error: deleteError } = await supabase
+            .storage
+            .from('img')
+            .remove([filename]);
+
+        if (deleteError) throw deleteError;
+
+        // Elimina la ruta de la imagen de la base de datos
+        const { error: dbError } = await supabase
+            .from('imagen')
+            .delete()
+            .eq('id_imagen', id);
+
+        if (dbError) throw dbError;
+
         res.json({ message: 'Imagen eliminada con éxito' });
         console.log("Imagen eliminada con éxito");
     } catch (err) {
@@ -177,7 +203,7 @@ app.get('/imagenCarrusel', async (req, res) => {
     try {
         const { data, error } = await supabase
             .from('imagen')
-            .select('ruta')
+            .select('ruta, id_imagen')
             .eq('tipo', 'Carrusel');
 
         if (error) {
@@ -186,8 +212,8 @@ app.get('/imagenCarrusel', async (req, res) => {
         }
 
         if (data && data.length > 0) {
-            // Devuelve el arreglo de rutas de las imágenes
-            return res.json(data.map(item => ({ url: item.ruta })));
+            // Devuelve el arreglo de rutas de las imágenes y sus respectivos ids
+            return res.json(data.map(item => ({ url: item.ruta, id: item.id_imagen })));
         } else {
             return res.status(404).json({ error: "Imagen no encontrada" });
         }
