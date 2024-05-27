@@ -325,9 +325,9 @@ app.post('/login', async (req, res) => {
         if (error) throw error;
 
         if (user) {
+            console.log("Usuario autenticado con éxito");
             req.session.user = username;
             res.redirect('/admin');
-            console.log("Usuario autenticado con éxito");
         }
     } catch (err) {
         console.log("Error during sign in:", err);

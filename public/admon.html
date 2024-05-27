@@ -15,8 +15,8 @@
                     <img src="/img/icons8-stylish-sombrero-hat-with-vintage-looks-isolated-on-a-white-background-100.png" alt="sombnrero-rev">
                     <h1>Bienvenido Victor</h1>
                     <p>Seleccione las fotos para el carrusel principal</p>
-                    <button id="logout">Cerrar sesión</button>
-                    <button id="uploadButton">Subir imagen</button>
+                    <button id="logout" class="cs-button">Cerrar sesión</button>
+                    <button id="uploadButton" class="cs-button">Subir imagen</button>
                     <input type="file" id="imageInput" style="display: none;" />
                 </div>
                 <div class="cs-admon__grid">
@@ -79,38 +79,54 @@
                 <h1>Seleccione Temporada</h1>
                 <form action="/css/admon.js" method="post">
                     <div class="admon-label">
-                        <label>Primavera</label>
-                        <input type="radio" name="temporada" value="Primavera">
+                        <label>
+                            <input type="radio" name="temporada" value="Primavera">
+                            <span class="custom-radio">Primavera</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Meses Patrios</label>
-                        <input type="radio" name="temporada" value="Patrio">
+                        <label>
+                            <input type="radio" name="temporada" value="Patrio">
+                            <span class="custom-radio">Meses Patrios</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Navidad</label>
-                        <input type="radio" name="temporada" value="Navidad">
+                        <label>
+                            <input type="radio" name="temporada" value="Navidad">
+                            <span class="custom-radio"> Navidad</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>San valentin</label>
-                        <input type="radio" name="temporada" value="Valentin">
+                        <label>
+                            <input type="radio" name="temporada" value="Valentin">
+                            <span class="custom-radio">San Valentin</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Dia de muertos</label>
-                        <input type="radio" name="temporada" value="Muertos">
+                        <label>
+                            <input type="radio" name="temporada" value="Muertos">
+                            <span class="custom-radio">Dia de Muertos</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Año nuevo</label>
-                        <input type="radio" name="temporada" value="Nuevo">
+                        <label>
+                            <input type="radio" name="temporada" value="Nuevo">
+                            <span class="custom-radio">Año Nuevo</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Día de las madres</label>
-                        <input type="radio" name="temporada" value="Madres">
+                        <label>
+                            <input type="radio" name="temporada" value="Madres">
+                            <span class="custom-radio">Dia de las Madres</span>
+                        </label>
                     </div>
                     <div class="admon-label">
-                        <label>Defecto</label>
-                        <input type="radio" name="temporada" value="Defecto">
+                        <label>
+                            <input type="radio" name="temporada" value="Defecto">
+                            <span class="custom-radio">Defecto</span>
+                        </label>
                     </div>
-                    <input type="submit" value="Enviar">
+                    <input type="submit" value="Enviar" class="cs-button">
                 </form>
             </div>
         </div>

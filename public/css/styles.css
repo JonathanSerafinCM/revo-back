@@ -1,5 +1,5 @@
 .cp-admon{
-    background-image: url(https://qxtumkmhykeajygikdhy.supabase.co/storage/v1/object/sign/img/Estampado_Grande.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWcvRXN0YW1wYWRvX0dyYW5kZS5wbmciLCJpYXQiOjE3MTY2NzI0NzUsImV4cCI6NDg3MDI3MjQ3NX0.IYH8W1KdMOQgRWsMwtSEyvoC5NFcBGreGxIGkS_T7e4&t=2024-05-25T21%3A27%3A56.639Z);
+    background-image: url(..//img/Estampado\ Grande.png);
     background-position: center center;
     background-repeat: no-repeat;
     display: flex;
@@ -15,6 +15,7 @@
     background-color: #fff;
     padding: 2rem;
     border: 3px solid #000;
+    border-radius: 5%;
 }
 .cs-admon__header{
     padding-bottom: 1rem;
@@ -46,6 +47,9 @@
 
 .background-image {
     transition: filter 0.3s ease;
+    border: 3px solid #000;
+    border-radius: 5%;
+    cursor: pointer;
 }
 .overlay-image {
     opacity: 0;
@@ -85,3 +89,82 @@
     display: flex;
     text-align: left;
 }
+
+button {
+    background: none;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.cs-button {
+    background: none;
+    border: 3px solid #000;
+    border-radius: 50%;
+    border-color: #ed4242;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: 'Josefin Slab', serif;
+    font-size: 15px;
+}
+
+.cs-input {
+    border-radius: 50%;
+    border-color: #ed4242;
+}
+
+input[type="radio"] {
+    display: none;
+  }
+
+  /* Estilizar el contenedor del radio button */
+  .custom-radio {
+    display: inline-block;
+    position: relative;
+    padding-left: 30px; /* Espacio para el círculo */
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none; /* Evita que el texto sea seleccionable */
+  }
+
+  /* Crear el círculo del radio button */
+  .custom-radio:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; /* Círculo */
+    border: 3px solid #ed4242; /* Borde del círculo */
+    background-color: #fff; /* Fondo del círculo */
+  }
+
+  /* Crear el punto dentro del círculo cuando está seleccionado */
+  input[type="radio"]:checked + .custom-radio:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #000; /* Color del punto */
+  }
+
+  h1{
+    font-family: 'Josefin Slab', serif; 
+  }
+
+  p{
+    font-family: 'Josefin Slab', serif;
+    font-size: 15px;
+  }
+
+  span {
+    font-family: 'Josefin Slab', serif;
+  }
+
+  input {
+    font-family: 'Josefin Slab', serif;
+    font-size: 18px;
+  }
