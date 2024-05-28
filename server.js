@@ -322,7 +322,7 @@ app.post('/login', async (req, res) => {
         if (error===null) {
             req.session.user = username;
             console.log("Sesión iniciada:", req.session.user);
-            res.redirect('http://localhost:3002/admin');
+            res.redirect('https://revolucionarios-backend.vercel.app/admin');
         }
     } catch (err) {
         console.log("Error during sign in:", err);
