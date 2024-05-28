@@ -154,7 +154,7 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: true }
 }));
 app.get('/', (req, res) => {
     return res.json("Backend");
@@ -301,17 +301,12 @@ function checkAuth(req, res, next) {
     res.redirect('/login');
   }
 }
-
+app.use(express.urlencoded({ extended: true }));
 app.get('/admin', (req, res) => {
     res.sendFile(path.resolve('public', 'admon.html'));
 });
-// app.use(express.static(path.join(__dirname, 'public')));
-// app.use(express.static('public'));
-//const serveStatic = import('serve-static');
-//app.use(serveStatic('Login'));
-//app.use(serveStatic('Admon.Rev'));
-//app.use('/css', express.static(path.join(__dirname, '../css')));
-app.use(express.urlencoded({ extended: true }));
+
+
 //npm install express-session
 
 app.post('/login', async (req, res) => {
@@ -323,11 +318,11 @@ app.post('/login', async (req, res) => {
         });
 
         if (error) throw error;
-
-        if (user) {
-            console.log("Usuario autenticado con éxito");
+        console.log("Usuario:", user);
+        if (error===null) {
             req.session.user = username;
-            res.redirect('/admin');
+            console.log("Sesión iniciada:", req.session.user);
+            res.redirect('http://localhost:3002/admin');
         }
     } catch (err) {
         console.log("Error during sign in:", err);
