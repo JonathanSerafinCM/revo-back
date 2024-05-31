@@ -14,19 +14,20 @@ async function cargarCarrusel() {
             img.src = item.url; // Aquí es donde accedemos a la propiedad url
             img.className = 'background-image';
             div.appendChild(img);
-            // Create a new button for each image
+            // Crear un botón para eliminar la imagen
             const button = document.createElement('button');
-            // Create an img element for the trash icon
+            // Crear un icono de basura
             const trashIcon = document.createElement('img');
-            trashIcon.src = '/img/icons8-basura-100.png'; // Replace with the path to your trash icon
+            trashIcon.src = '/img/icons8-basura-100.png';
             trashIcon.alt = 'Delete';
             button.appendChild(trashIcon);
             button.addEventListener('click', function() {
-    // Confirm before deleting the image
+    // Confirmar si el usuario quiere eliminar la imagen
     if (window.confirm('¿Estás seguro de que quieres eliminar la imagen?')) {
-        deleteImage(item.id); // Call a function to delete the image
+        deleteImage(item.id); // Llamar a la función deleteImage
     }
 });
+// Agregar el botón al div
 div.appendChild(button);
             grid.appendChild(div);
             img.addEventListener('click', function() {
@@ -39,6 +40,7 @@ div.appendChild(button);
         console.error('Error al cargar el carrusel:', error);
     }
 }
+// Función para eliminar una imagen
 async function deleteImage(id) {
     console.log(id);
     const response = await fetch('https://revolucionarios-backend.vercel.app/deleteImage', {
@@ -58,6 +60,7 @@ async function deleteImage(id) {
     console.log(result);
     cargarCarrusel();
 }
+//Mostrar formulario de actualización de imagen
 document.getElementById('fileInput').addEventListener('change', function() {
     var file = this.files[0];
     var xhr = new XMLHttpRequest();
@@ -75,6 +78,7 @@ document.getElementById('fileInput').addEventListener('change', function() {
     };
     xhr.send(formData);
 });
+//Cambio de fondo segun temporada
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
     const selectedOption = document.querySelector('input[name="temporada"]:checked').value;
@@ -91,6 +95,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
         console.error('Error:', error);
     });
 });
+//Cerrar sesión
 document.getElementById('logout').addEventListener('click', function() {
     fetch('/logout', { method: 'POST' })
     .then(response => {
@@ -101,10 +106,11 @@ document.getElementById('logout').addEventListener('click', function() {
         }
     });
 });
+//Subir imagen
 document.getElementById('uploadButton').addEventListener('click', function() {
     document.getElementById('imageInput').click();
 });
-
+//Subir imagen al servidor
 document.getElementById('imageInput').addEventListener('change', function() {
     var file = this.files[0];
     var xhr = new XMLHttpRequest();

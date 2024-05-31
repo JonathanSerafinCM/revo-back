@@ -8,18 +8,20 @@ const dotenv = await import('dotenv');
 dotenv.config();
 import session from 'express-session';
 const supabaseUrl = 'https://qxtumkmhykeajygikdhy.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY || '' // Add a default value of an empty string if SUPABASE_KEY is undefined
+const supabaseKey = process.env.SUPABASE_KEY || '' // Agrega la clave del proyecto de Supabase
 const port = process.env.PORT || 3002;
 const supabase = createClient(supabaseUrl, supabaseKey)
-
+// Inicializa la aplicación de Express
 const app = express();
 app.use(express.json());
+//Servir archivos estáticos
 app.use(express.static(path.resolve('public')));
 app.use(express.static(path.resolve('css')));
 app.use(cors());
+// Configura Multer para subir archivos
 var upload = multer({ storage: multer.memoryStorage() })
 
-
+// Ruta para subir una imagen
 app.post('/upload', upload.single('image'), async function (req, res, next) {
     // Elimina la imagen existente
     const file = req.file;
@@ -62,6 +64,7 @@ const { data: updatedData, error: updateError } = await supabase
 console.log("Imagen subida con éxito");
     
 });
+// Ruta para eliminar una imagen
 app.post('/deleteImage', async function (req, res, next) {
     const { id } = req.body;
     console.log("ID de la imagen a eliminar:", id);
@@ -101,7 +104,7 @@ app.post('/deleteImage', async function (req, res, next) {
         return res.status(500).json({ error: err.message });
     }
 });
-
+// Ruta para subir una imagen al carrusel
 app.post('/uploadImageToDB', upload.single('image'), async function (req, res, next) {
     const file = req.file;
 
@@ -150,21 +153,18 @@ app.post('/uploadImageToDB', upload.single('image'), async function (req, res, n
 app.listen(3000, () => {
     console.log('Servidor corriendo en http://localhost:3000');
 });
+// Inicializa la sesión
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
     cookie: { secure: true }
 }));
+// Ruta para verificar la sesión
 app.get('/', (req, res) => {
     return res.json("Backend");
 })
-const db = mariadb.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'revolucionarios'
-});
+// Ruta para verificar la sesión
 async function testDbConnection() {
     try {
         const { data, error } = await supabase.from('platillos').select('*');
@@ -176,9 +176,9 @@ async function testDbConnection() {
         return false;
     }
 }
-
-
+// Verificar la conexión a la base de datos
 testDbConnection().catch(console.error);
+// Ruta para obtener todos los platillos
 app.get('/platillos' , async (req, res) => {
     console.log("Ruta '/platillos' llamada");
     try {
@@ -191,6 +191,7 @@ app.get('/platillos' , async (req, res) => {
         return res.status(500).json({error: err.message});
     }
 });
+// Ruta para obtener una imagen por su id
 app.get('/imagen/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -209,6 +210,7 @@ app.get('/imagen/:id', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+// Ruta para generar un carrusel de imágenes
 app.get('/carrusel', async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -227,6 +229,7 @@ app.get('/carrusel', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+//Ruta para obtener la ruta de las imagenes del carrusel
 app.get('/imagenCarrusel', async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -250,6 +253,7 @@ app.get('/imagenCarrusel', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+// Ruta para obtener la ruta de la imagen de fondo
 app.get('/fondo', async (req, res) => {
     try {
         const { data, error } = await supabase
@@ -270,6 +274,7 @@ app.get('/fondo', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+// Ruta para obtener la descripción de un platillo por su nombre
 app.get('/descripcion/:nombre', async (req, res) => {
     const { nombre } = req.params;
     try {
@@ -288,12 +293,12 @@ app.get('/descripcion/:nombre', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+//Ruta para hacer login
 app.get('/login', (req, res) => {
-    // Aquí puedes renderizar tu página de login o enviar un archivo HTML
     console.log("Ruta '/login' llamada");
     res.sendFile(path.resolve('public', 'login.html'));
 });
-
+//Funcion para verificar la autenticación
 function checkAuth(req, res, next) {
   if (req.session.user) {
     next();
@@ -302,13 +307,14 @@ function checkAuth(req, res, next) {
   }
 }
 app.use(express.urlencoded({ extended: true }));
-app.get('/admin', (req, res) => {
+//Ruta para el administrador, con checkAuth para verificar la autenticación
+app.get('/admin',checkAuth, (req, res) => {
     res.sendFile(path.resolve('public', 'admon.html'));
 });
 
 
 //npm install express-session
-
+//post para login
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     try {
@@ -329,6 +335,7 @@ app.post('/login', async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 });
+//Ruta para cambiar la imagen de fondo segun la temporada
 app.post('/updateImage', async function (req, res, next) {
     const { temporada } = req.body;
 
@@ -349,6 +356,7 @@ app.post('/updateImage', async function (req, res, next) {
     console.log("Imagen actualizada con éxito");
     res.json({ message: 'Imagen actualizada con éxito' });
 });
+//Ruta para cerrar sesión
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
