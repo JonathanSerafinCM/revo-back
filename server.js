@@ -158,7 +158,7 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: true }
+    cookie: { secure: false }
 }));
 // Ruta para verificar la sesión
 app.get('/', (req, res) => {
@@ -300,15 +300,16 @@ app.get('/login', (req, res) => {
 });
 //Funcion para verificar la autenticación
 function checkAuth(req, res, next) {
+    console.log("Verificando autenticación", req.session.user);
   if (req.session.user) {
     next();
   } else {
-    res.redirect('/login');
+    res.redirect('revolucionarios-backend.vercel.app/login');
   }
 }
 app.use(express.urlencoded({ extended: true }));
 //Ruta para el administrador, con checkAuth para verificar la autenticación
-app.get('/admin',checkAuth, (req, res) => {
+app.get('/admin',checkAuth,(req, res) => {
     res.sendFile(path.resolve('public', 'admon.html'));
 });
 
@@ -328,7 +329,7 @@ app.post('/login', async (req, res) => {
         if (error===null) {
             req.session.user = username;
             console.log("Sesión iniciada:", req.session.user);
-            res.redirect('https://revolucionarios-backend.vercel.app/admin');
+            res.redirect('revolucionarios-backend.vercel.app/admin');
         }
     } catch (err) {
         console.log("Error during sign in:", err);
