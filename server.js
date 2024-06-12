@@ -7,7 +7,7 @@ import path from 'path';
 const dotenv = await import('dotenv');
 dotenv.config();
 import session from 'express-session';
-const supabaseUrl = 'https://qxtumkmhykeajygikdhy.supabase.co'
+const supabaseUrl = 'https://blgnmryrngluqykthash.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY || '' // Agrega la clave del proyecto de Supabase
 const port = process.env.PORT || 3002;
 const supabase = createClient(supabaseUrl, supabaseKey)
