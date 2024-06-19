@@ -341,7 +341,7 @@ app.post('/updateImage', async function (req, res, next) {
     const { temporada } = req.body;
 
     // Generar la nueva ruta de la imagen
-    const newImagePath = `https://qxtumkmhykeajygikdhy.supabase.co/storage/v1/object/public/img/${temporada}.png`;
+    const newImagePath = `https://blgnmryrngluqykthash.supabase.co/storage/v1/object/public/img/${temporada}.png`;
 
     // Actualizar la ruta de la imagen en la base de datos
     const { data: updatedData, error: updateError } = await supabase
